@@ -1,0 +1,113 @@
+<div ng-controller="AppCtrl">
+<md-toolbar>
+		<div class="md-toolbar-tools">
+			<p><strong>ngClassifieds</strong></p>
+			<md-button ng-click="navi()">
+				<md-icon class="mdi mdi-plus-circle"></md-icon>
+				New classified
+			</md-button>
+
+			<md-button ng-click="showFilters = true">
+				<md-icon class="mdi mdi-magnify"></md-icon>
+				Filters
+			</md-button>
+			<md-button ui-sref='classifieds2'>fruits</md-button>
+		</div>
+</md-toolbar>
+<div class="filters" layout-align="center center" ng-show="showFilters"  layout="row">
+		<md-input-container layout="row">
+			<label>Enter Search Term</label>
+			<input type="text" ng-model="classifiedsFilter" />
+		</md-input-container>
+
+		<md-input-container>
+			<label>Category</label>
+			<md-select ng-model="category">
+				<md-option ng-repeat="category in categories" value="{{ category }}">
+					{{category}}
+				</md-option>
+			</md-select>
+		</md-input-container>
+
+		<md-input-container>
+			<md-button class="md-warn" ng-click="classifiedsFilter=''; category=''; showFilters=false">
+				Clear
+			</md-button>
+		</md-input-container>
+</div>
+
+<md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left">
+		<md-toolbar>
+			<h1 class="md-toolbar-tools">Add a classified</h1>
+		</md-toolbar>
+
+		<md-content layout-padding>
+			<form>
+			  <md-input-container>
+			    <label for="title">Title</label>
+			    <input type="text" id="title" ng-model="objects1.title"
+			           md-autofocus>
+			  </md-input-container>
+			  <md-input-container>
+			    <label for="price">Price</label>
+			    <input type="text" id="price" ng-model="objects1.price">
+			  </md-input-container>
+			  <md-input-container>
+			    <label for="description">Description</label>
+			    <textarea type="text" id="description" ng-model="objects1.description"></textarea>
+			  </md-input-container>
+			  <md-input-container>
+			    <label for="categories">category</label>
+			    <input type="text" id="categories" ng-model="objects1.categories.lol">
+			  </md-input-container>
+			  <md-input-container>
+			    <label for="image">Image Link</label>
+			    <input type="text" id="image" ng-model="objects1.image">
+			  </md-input-container>
+			  <md-button ng-if="!value" ng-click="saveobjects1(objects1)" class="md-primary">
+			    Save
+			  </md-button>
+			  <md-button ng-if="value" ng-click="finished()" class="md-primary">
+			    Save Edit
+			  </md-button>
+			  <md-button ng-click="clo()" class="md-warn">
+			    Cancel
+			  </md-button>
+			</form>
+		</md-content>
+</md-sidenav>	
+
+<md-content class="md-padding" layout="row" layout-wrap>
+		<md-card ng-repeat="object in objects |
+							filter: classifiedsFilter |
+							filter: category" 
+							flex="30"
+							class="classified">
+			<img src={{object.image}} alt="">
+			<md-card-content>
+				<div class="classified-info" ng-show="!showContact">
+					<h2 class="md-title">{{object.title}}</h2>
+					<h3>{{object.price | currency}}</h3>
+					<p>{{object.description}}</p>
+				</div>
+
+				
+
+				<div layout="row">
+					<md-button ng-click="showContact = true" ng-show="!showContact">Contact</md-button>
+					<md-button ng-click="showContact = false" ng-show="showContact">Details</md-button>
+					<md-button ng-click="showAdmin = true" ng-show="!showAdmin">Admin</md-button>
+					<md-button ng-click="showAdmin = false" ng-show="showAdmin">Close</md-button>
+				</div>
+
+				<div class="classified-admin" ng-if="showAdmin">
+					<h3>Admin</h3>
+					<div layout="row">
+						<md-button ng-click="editing(object)" class="md-primary" >Edit</md-button>
+						<md-button ng-click="dele($event, object)" class="md-warn">Delete</md-button>
+					</div>
+				</div>
+			</md-card-content>
+		</md-card>
+</md-content>
+</div>
